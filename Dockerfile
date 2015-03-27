@@ -16,3 +16,4 @@ RUN cd incubator-zeppelin \
 	git reset --hard a007a9b5f235ebd9c608a005c5243503291d94d5 \
 	mvn clean package -Pspark-1.3 -Dhadoop.version=2.2.0 -Phadoop-2.2 -Pyarn -DskipTests
 
+EXPOSE 8080
