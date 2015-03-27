@@ -14,7 +14,8 @@ RUN apt-get -y install npm
 RUN git clone https://github.com/apache/incubator-zeppelin.git
 RUN cd incubator-zeppelin \
 	git reset --hard a007a9b5f235ebd9c608a005c5243503291d94d5
-RUN cd incubator-zeppelin \
-	 mvn clean package -Pspark-1.3 -Dhadoop.version=2.2.0 -Phadoop-2.2 -Pyarn -DskipTests
+
+ADD warm_maven.sh /usr/local/bin/warm_maven.sh
+RUN /usr/local/bin/warm_maven.sh 
 
 EXPOSE 8080
