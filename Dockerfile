@@ -18,4 +18,4 @@ RUN cd incubator-zeppelin \
 ADD warm_maven.sh /usr/local/bin/warm_maven.sh
 RUN /usr/local/bin/warm_maven.sh 
 
-EXPOSE 8080, 8081
+EXPOSE 8080 8081
