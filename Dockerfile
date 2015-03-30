@@ -15,9 +15,6 @@ RUN git clone https://github.com/apache/incubator-zeppelin.git
 RUN cd incubator-zeppelin \
 	git reset --hard a007a9b5f235ebd9c608a005c5243503291d94d5
 
-RUN mkdir /incubator-zeppelin/notebook/SparkPi
-ADD src/example/node.json /incubator-zeppelin/notebook/SparkPi/node.json 
-
 ADD warm_maven.sh /usr/local/bin/warm_maven.sh
 RUN /usr/local/bin/warm_maven.sh 
 
