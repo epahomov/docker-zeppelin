@@ -24,6 +24,7 @@ RUN cd incubator-zeppelin \
 	git reset --hard 2498e5df12ae8cc1b24375e253df94394710aaf8
 
 ADD warm_maven.sh /usr/local/bin/warm_maven.sh
+ADD scripts/start-script.sh /start-script.sh
 RUN /usr/local/bin/warm_maven.sh 
 
 EXPOSE 8080 8081
