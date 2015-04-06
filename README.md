@@ -3,7 +3,14 @@ Docker container for zeppelin
 
 This repository contains a set of scripts and configuration files to run a [Apache Zeppelin(incubating)](https://zeppelin.incubator.apache.org/) from [Docker](https://www.docker.io/) containers.
 
-To run zeppelin:
+To run zeppelin from script, execute:
+```
+./start-zeppelin-linked.sh
+```
+
+It will run and link your zeppelin instance with spark_master container. You can create spark cluster from [image](https://registry.hub.docker.com/u/epahomov/docker-spark/).
+
+To run zeppelin manually:
 
 Pull container:
 ```
