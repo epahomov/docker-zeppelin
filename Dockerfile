@@ -25,9 +25,7 @@ RUN cd incubator-zeppelin \
 
 ADD warm_maven.sh /usr/local/bin/warm_maven.sh
 ADD scripts/start-script.sh /start-script.sh
-ADD scripts/remove_alias.sh /remove_alias.sh
 ADD scripts/configured_env.sh /configured_env.sh
-ADD scripts/setup_env.sh setup_env.sh
 RUN /usr/local/bin/warm_maven.sh 
 
 EXPOSE 8080 8081
