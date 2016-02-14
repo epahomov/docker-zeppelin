@@ -5,6 +5,6 @@ sed '1d' /etc/hosts > tmpHosts
 cat tmpHosts > /etc/hosts
 rm tmpHosts
 
-export MASTER=spark://${SPARK_MASTER_PORT_7077_TCP_ADDR}:${SPARK_MASTER_ENV$
+export MASTER=spark://${SPARK_MASTER_PORT_7077_TCP_ADDR}:${SPARK_MASTER_ENV}$
 cd incubator-zeppelin/
 /bin/bash
