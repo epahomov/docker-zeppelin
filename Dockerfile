@@ -1,31 +1,31 @@
-FROM    ubuntu:14.04
+FROM epahomov/docker-spark:java_8_spark_2.0.2_hadoop_2.6
 
 MAINTAINER Pakhomov Egor <pahomov.egor@gmail.com>
 
-RUN apt-get -y update
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes software-properties-common python-software-properties
-RUN apt-add-repository -y ppa:webupd8team/java
-RUN apt-get -y update
-RUN /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install oracle-java7-installer oracle-java7-set-default
+LABEL version="zep_0.6.2_java_8_spark_2.1.0_hadoop_2.6"
 
-ENV MAVEN_VERSION 3.3.1
-RUN apt-get -y install curl
-RUN curl -sSL http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
-  && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
-  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+ARG ZEPPELIN_VERSION="v0.6.2"
+ARG SPARK_ZEPPELIN_VERSION="2.0"
+ARG MAJOR_HADOOP_VERSION="2.6"
 
-ENV MAVEN_HOME /usr/share/maven
+RUN git clone --depth 1 --branch ${ZEPPELIN_VERSION} https://github.com/apache/zeppelin.git /zeppelin
 
-RUN apt-get -y install git
-RUN apt-get -y install npm
-RUN git clone https://github.com/apache/incubator-zeppelin.git
-RUN cd incubator-zeppelin \
-	git reset --hard 2498e5df12ae8cc1b24375e253df94394710aaf8
+WORKDIR /zeppelin
 
-ADD warm_maven.sh /usr/local/bin/warm_maven.sh
-ADD scripts/start-script.sh /start-script.sh
-ADD scripts/configured_env.sh /configured_env.sh
-RUN /usr/local/bin/warm_maven.sh 
+ENV SPARK_HIVE true
 
-EXPOSE 8080 8081
+RUN apt-get update
+RUN apt-get install -y maven
+RUN mvn -Pspark-${SPARK_ZEPPELIN_VERSION} -Phadoop-${MAJOR_HADOOP_VERSION} -Pyarn -Ppyspark -DskipTests -Pvendor-repo clean package
+
+ENV ZEPPELIN_HOME /zeppelin
+
+RUN apt-get install -y python-matplotlib
+
+# Otherwise there would be no process for docker to understand, that something is running
+RUN echo "tail -F /zeppelin/logs/*" >> bin/zeppelin-daemon.sh
+RUN mkdir ~/.config/matplotlib
+RUN echo "backend : Agg" >> ~/.config/matplotlib/matplotlibrc
+EXPOSE 8080 7077
+
+CMD ["/zeppelin/bin/zeppelin-daemon.sh","start"]
