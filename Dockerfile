@@ -1,4 +1,4 @@
-FROM epahomov/docker-spark:java_8_spark_2.0.2_hadoop_2.6
+FROM epahomov/docker-spark:spark_2.0_hadoop_2.6
 
 MAINTAINER Pakhomov Egor <pahomov.egor@gmail.com>
 
