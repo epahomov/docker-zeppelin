@@ -13,6 +13,10 @@ WORKDIR /zeppelin
 ENV SPARK_HIVE true
 ENV ZEPPELIN_HOME /zeppelin
 
+RUN R -e "install.packages('devtools', repos = 'http://cran.us.r-project.org')"
+RUN R -e "install.packages('knitr', repos = 'http://cran.us.r-project.org')"
+RUN R -e "install.packages('ggplot2', repos = 'http://cran.us.r-project.org')"
+
 RUN git clone --depth 1 --branch ${ZEPPELIN_VERSION} https://github.com/apache/zeppelin.git /zeppelin && \
     apt-get update && \
     apt-get install -y maven && \
