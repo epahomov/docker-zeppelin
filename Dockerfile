@@ -13,7 +13,7 @@ WORKDIR /zeppelin
 ENV SPARK_HIVE true
 ENV ZEPPELIN_HOME /zeppelin
 
-ln -s /usr/lib/jvm/java-8-oracle /usr/lib/jvm/default-java
+RUN ln -s /usr/lib/jvm/java-8-oracle /usr/lib/jvm/default-java
 
 RUN R -e "install.packages('devtools', repos = 'http://cran.us.r-project.org')"
 RUN R -e "install.packages('knitr', repos = 'http://cran.us.r-project.org')"
