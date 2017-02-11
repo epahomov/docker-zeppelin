@@ -1,12 +1,12 @@
-FROM epahomov/docker-spark:spark_2.0_hadoop_2.6
+FROM epahomov/docker-spark:spark_2.1_hadoop_2.7
 
 MAINTAINER Pakhomov Egor <pahomov.egor@gmail.com>
 
-LABEL version="zep_0.6.2_java_8_spark_2.1.0_hadoop_2.6"
+LABEL version="zep_0.7_spark_2.1_hadoop_2.7"
 
-ARG ZEPPELIN_VERSION="v0.6.2"
-ARG SPARK_ZEPPELIN_VERSION="2.0"
-ARG MAJOR_HADOOP_VERSION="2.6"
+ARG ZEPPELIN_VERSION="v0.7.0"
+ARG SPARK_ZEPPELIN_VERSION="2.1"
+ARG MAJOR_HADOOP_VERSION="2.7"
 
 WORKDIR /zeppelin
 
@@ -15,16 +15,15 @@ ENV ZEPPELIN_HOME /zeppelin
 
 RUN ln -s /usr/lib/jvm/java-8-oracle /usr/lib/jvm/default-java
 
-RUN R -e "install.packages('devtools', repos = 'http://cran.us.r-project.org')"
-RUN R -e "install.packages('knitr', repos = 'http://cran.us.r-project.org')"
-RUN R -e "install.packages('ggplot2', repos = 'http://cran.us.r-project.org')"
-RUN R -e "install.packages('rJava', repos = 'http://cran.us.r-project.org')"
-RUN R -e "install.packages('RJDBC', repos = 'http://cran.us.r-project.org')"
-
-RUN git clone --depth 1 --branch ${ZEPPELIN_VERSION} https://github.com/apache/zeppelin.git /zeppelin && \
+RUN R -e "install.packages('devtools', repos = 'http://cran.us.r-project.org')" && \
+    R -e "install.packages('knitr', repos = 'http://cran.us.r-project.org')" && \
+    R -e "install.packages('ggplot2', repos = 'http://cran.us.r-project.org')" && \
+    R -e "install.packages('rJava', repos = 'http://cran.us.r-project.org')" && \
+    R -e "install.packages('RJDBC', repos = 'http://cran.us.r-project.org')" && \
+    git clone --depth 1 --branch ${ZEPPELIN_VERSION} https://github.com/apache/zeppelin.git /zeppelin && \
     apt-get update && \
     apt-get install -y maven && \
-    mvn  -Pscala-2.11 -Pspark-${SPARK_ZEPPELIN_VERSION} -Phadoop-${MAJOR_HADOOP_VERSION} -Psparkr -Pyarn -Ppyspark -DskipTests -Pvendor-repo clean package && \
+    mvn  -Pscala-2.11 -Pspark-${SPARK_ZEPPELIN_VERSION} -Phadoop-${MAJOR_HADOOP_VERSION} -Psparkr -Pr -Pyarn -Ppyspark -DskipTests -Pvendor-repo clean package && \
     apt-get install -y python-matplotlib && \
     echo "tail -F /zeppelin/logs/*" >> bin/zeppelin-daemon.sh && \
     mkdir ~/.config/matplotlib && \
