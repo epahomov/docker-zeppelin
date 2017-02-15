@@ -13,9 +13,8 @@ WORKDIR /zeppelin
 ENV SPARK_HIVE true
 ENV ZEPPELIN_HOME /zeppelin
 
-RUN ln -s /usr/lib/jvm/java-8-oracle /usr/lib/jvm/default-java
-
-RUN R -e "install.packages('devtools', repos = 'http://cran.us.r-project.org')" && \
+RUN ln -s /usr/lib/jvm/java-8-oracle /usr/lib/jvm/default-java && \
+    R -e "install.packages('devtools', repos = 'http://cran.us.r-project.org')" && \
     R -e "install.packages('knitr', repos = 'http://cran.us.r-project.org')" && \
     R -e "install.packages('ggplot2', repos = 'http://cran.us.r-project.org')" && \
     R -e "install.packages('rJava', repos = 'http://cran.us.r-project.org')" && \
@@ -24,8 +23,9 @@ RUN R -e "install.packages('devtools', repos = 'http://cran.us.r-project.org')" 
     apt-get update && \
     apt-get install -y maven && \
     dev/change_scala_version.sh 2.11 && \
-    echo '{ "allow_root": true }' >>  /root/.bowerrc && \
-    mvn  -Pscala-2.11 -Pspark-${SPARK_ZEPPELIN_VERSION} -Phadoop-${MAJOR_HADOOP_VERSION} -Psparkr -Pr -Pyarn -Ppyspark -DskipTests -Pvendor-repo clean package && \
+    echo '{ "allow_root": true }' >>  /root/.bowerrc  && \
+    apt-get install -y npm  && \
+    mvn -e -Pscala-2.11 -Pspark-${SPARK_ZEPPELIN_VERSION} -Phadoop-${MAJOR_HADOOP_VERSION} -Psparkr -Pr -Pyarn -Ppyspark -DskipTests -Pvendor-repo package && \
     apt-get install -y python-matplotlib && \
     echo "tail -F /zeppelin/logs/*" >> bin/zeppelin-daemon.sh && \
     mkdir ~/.config/matplotlib && \
