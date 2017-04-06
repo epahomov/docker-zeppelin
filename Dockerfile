@@ -4,7 +4,7 @@ MAINTAINER Pakhomov Egor <pahomov.egor@gmail.com>
 
 LABEL version="zep_0.7_spark_2.1_hadoop_2.7"
 
-ARG ZEPPELIN_VERSION="v0.7.0"
+ARG ZEPPELIN_VERSION="v0.7.1"
 ARG SPARK_ZEPPELIN_VERSION="2.1"
 ARG MAJOR_HADOOP_VERSION="2.7"
 
